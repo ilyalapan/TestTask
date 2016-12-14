@@ -12,39 +12,27 @@ import Alamofire
 
 protocol Loadable {
     
-    func load(idToken: String, completed: @escaping (ServerRequestResponse) -> Void )
+    func load( completed: @escaping (ServerRequestResponse)  -> Void )
     func getURLFetchString() -> String
-    func loadArray(array: [Dictionary<String,AnyObject>] )
-    
-    func count() -> Int //count number of elements, supporting non trivial counting
-    
+    func loadArray(array: Dictionary<String,AnyObject> )
+        
 }
 
 extension Loadable {
     
-    func load(idToken: String = "", completed: @escaping (ServerRequestResponse) -> Void )  {
-        var headers : Dictionary<String,String> = [:]
-        if idToken != "" {
-            headers = ["Authorization": "Bearer " + idToken,]
-        }
+    func load( completed: @escaping (ServerRequestResponse)  -> Void )  {
+        
         let URLString = self.getURLFetchString()
         
-        Alamofire.request(URLString, headers: headers).responseJSON{ response in
+        Alamofire.request(URLString).responseJSON{ response in
             
             do {
                 let postsArray = try RequestHelper.checkResponse(responseJSON: response)
                 self.loadArray(array: postsArray)
                 completed(ServerRequestResponse.Success)
             }
-            catch ServerResponseError.Unathorised {
-                completed(ServerRequestResponse.Unathorised)
-            }
-            catch ServerResponseError.Empty {
-                print("Empty")
-                completed(ServerRequestResponse.Empty)
-            } //TODO: Cath all the errors or it will crash!
             catch {
-                assert(false, "Did not catch error with the response")
+                print("Uncaught Error")
             }
         }
     }

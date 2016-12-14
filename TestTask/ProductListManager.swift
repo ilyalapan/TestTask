@@ -12,51 +12,51 @@ class ProductListManager: Loadable,Pagination {
     
     var products: [[Product]] = [[]]
     
-    var daysAgo: Int = 0
-    
-    var category: String
+    var category: String = "tech"
     
     
-    var numberOfDays: Int {
-        get {
-            return daysAgo + 1
-        }
+    func getNumberOfProductsForSection(section: Int) -> Int {
+        return products[section].count
     }
     
     
     //MARK: Loadable
     
     func getURLFetchString() -> String {
-        return "https://api.producthunt.com/v1/categories/\(self.category)/posts"
+        return "https://api.producthunt.com/v1/categories/\(self.category)/posts?access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff"
     }
     
     
-    func loadArray(array: Array<Dictionary<String, AnyObject>> ){
+    func loadArray(array: Dictionary<String, AnyObject> ){
         self.products = [[]]
-        for productDict in array{
-            let product = Product(dict: postDict)
-            self.posts.append(post)
+        if let array = array["posts"] as? Array<Dictionary<String, AnyObject>>{
+            for productDict in array{
+                let product = Product(dict: productDict)
+                self.products[0].append(product)
+            }
         }
     }
+
+    
     
     //MARK: Pagination
     
-    func updateArray(array: Array<Dictionary<String, AnyObject>> ){
-        for postDict in array{
-            let post = FeedPost(dict: postDict)
-            self.posts.append(post)
+    func updateArray(array: Dictionary<String, AnyObject> ){
+        var productsArray = [Product]()
+        if let array = array["posts"] as? Array<Dictionary<String, AnyObject>>{
+            for productDict in array{
+                let product = Product(dict: productDict)
+                productsArray.append(product)
+            }
         }
+        self.products.append(productsArray)
     }
     
     
-    func getURLMoreString(category: String) -> String {
-        return "https://api.producthunt.com/v1/categories/\(self.category)/posts/days_ago=" + String(daysAgo)
+    func getURLMoreString() -> String {
+        return "https://api.producthunt.com/v1/categories/\(self.category)/posts?days_ago=" + String(products.count + 1) + "&access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff"
     }
     
-    func count() -> Int {
-        return self.posts.count
-    }
-
     
 }
 

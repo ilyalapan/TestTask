@@ -13,35 +13,25 @@ import Alamofire
 protocol Pagination {
     
     func getURLMoreString() -> String
-    func updateArray(array: [Dictionary<String,AnyObject>] )
-    func loadMore(idToken: String, completed: @escaping (ServerRequestResponse) -> Void )
+    func updateArray(array: Dictionary<String,AnyObject> )
+    func loadMore(completed: @escaping (ServerRequestResponse) -> Void )
     
 }
 
 extension Pagination {
     
-    func loadMore(idToken: String = "", completed: @escaping (ServerRequestResponse) -> Void )  {
-        var headers : Dictionary<String,String> = [:]
-        if idToken != "" {
-            headers = ["Authorization": "Bearer " + idToken,]
-        }
+    func loadMore(completed: @escaping (ServerRequestResponse) -> Void )  {
         let URLString = self.getURLMoreString()
         
-        Alamofire.request(URLString, headers: headers).responseJSON{ response in
+        Alamofire.request(URLString).responseJSON{ response in
             
             do {
                 let postsArray = try RequestHelper.checkResponse(responseJSON: response)
                 self.updateArray(array: postsArray)
                 completed(ServerRequestResponse.Success)
             }
-            catch ServerResponseError.Empty {
-                completed(ServerRequestResponse.Empty)
-            }
-            catch ServerResponseError.Unathorised {
-                completed(ServerRequestResponse.Unathorised)
-            } //TODO: Cath all the errors or it will crash!
             catch {
-                assert(false, "Did not catch error with the response")
+                print("Uncaught Error")
             }
         }
     }

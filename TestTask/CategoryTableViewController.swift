@@ -1,5 +1,5 @@
 //
-//  ProductListTableViewController.swift
+//  CategoryTableViewController.swift
 //  TestTask
 //
 //  Created by Ilya Lapan on 14/12/2016.
@@ -8,97 +8,61 @@
 
 import UIKit
 
-class ProductListTableViewController: UITableViewController {
+class CategoryTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 
-    @IBOutlet weak var categoryButton: UIButton!
-    
-    var manager: ProductListManager = ProductListManager()
-    
-    
-    var isLoading: Bool = false
-    var isRefreshing: Bool = false
-    var isScrollLoadEnabled = true
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        refreshControl = UIRefreshControl()
-        refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView.addSubview(refreshControl!)
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
-    
-    func refresh() {
-        isRefreshing = true
-        isLoading = false
-        self.manager.load(){result in
-            self.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
-            self.isRefreshing = false
-        }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.manager.load(){result in
-            self.tableView.reloadData()
-        }
-        
-    }
-    
-        
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return manager.products.count
+        // #warning Incomplete implementation, return the number of sections
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return manager.getNumberOfProductsForSection(section: section)
+        return 0
     }
 
     
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
+    }
+    
+    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
+        let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
+        let btnDone = UIBarButtonItem(title: "Done", style: .done, target: self, action: "dismiss")
+        navigationController.topViewController?.navigationItem.rightBarButtonItem = btnDone
+        return navigationController
+    }
+    
+    func dismiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "productCell", for: indexPath) as? ProductTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        let product = manager.products[indexPath.section][indexPath.row]
-        
-        cell?.configureCell(product: product)
-        
-        return cell!
+        // Configure the cell...
+
+        return cell
     }
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.section == manager.products.count - 1{
-            if indexPath.row == manager.products[indexPath.section].count - 1 {
-                self.loadMoreData()
-            }
-            
-        }
-    }
-    
-    func loadMoreData() {
-        if isLoading || isRefreshing {
-            return //Do not load if is already loading
-        }
-        self.isLoading = true
-        self.manager.loadMore(){ result in
-            if (result as? ServerRequestResponse == ServerRequestResponse.Success) {
-                self.isLoading = false
-                self.tableView.reloadData()
-            }
-        }
-        
-    }
-    
-    
+    */
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

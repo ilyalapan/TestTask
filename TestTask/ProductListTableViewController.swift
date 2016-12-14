@@ -10,6 +10,10 @@ import UIKit
 
 class ProductListTableViewController: UITableViewController {
 
+    
+    var manager: ProductListManager = ProductListManager()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -28,8 +32,7 @@ class ProductListTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return manager.numberOfDays
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

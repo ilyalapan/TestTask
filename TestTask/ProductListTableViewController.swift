@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Alamofire
 
-class ProductListTableViewController: UITableViewController {
+
+class ProductListTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, CategorySelectedDelegate {
 
     @IBOutlet weak var categoryButton: UIButton!
     
@@ -18,6 +20,8 @@ class ProductListTableViewController: UITableViewController {
     var isLoading: Bool = false
     var isRefreshing: Bool = false
     var isScrollLoadEnabled = true
+    
+    var categories: [Dictionary<String,AnyObject>] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +35,21 @@ class ProductListTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        let URLString = "https://api.producthunt.com/v1/categories?access_token=591f99547f569b05ba7d8777e2e0824eea16c440292cce1f8dfb3952cc9937ff"
+        
+        Alamofire.request(URLString).responseJSON{ response in
+            
+            do {
+                let result = try RequestHelper.checkResponse(responseJSON: response)
+                self.categories = result["categories"] as! [Dictionary<String,AnyObject>]
+            }
+            catch {
+                print("Uncaught Error")
+            }
+        }
+
+        
     }
     
     func refresh() {
@@ -49,10 +68,30 @@ class ProductListTableViewController: UITableViewController {
         self.manager.load(){result in
             self.tableView.reloadData()
         }
-        
     }
     
-        
+    
+    
+    // MARK: - Popover
+
+    
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    
+    // MARK: - Category Selected
+    func categorySelected(index: Int) {
+        self.categoryButton.setTitle( categories[index]["name"] as! String?, for: .normal)
+        self.manager.category = categories[index]["slug"] as! String
+        self.presentedViewController?.dismiss(animated: true, completion: nil)
+        self.manager.load(){_ in 
+            self.tableView.reloadData()
+        }
+
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -64,6 +103,16 @@ class ProductListTableViewController: UITableViewController {
         return manager.getNumberOfProductsForSection(section: section)
     }
 
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if section == 0 {
+            return "Today"
+        }
+        else {
+            return String(section) + " Days Ago"
+        }
+        
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "productCell", for: indexPath) as? ProductTableViewCell
@@ -134,14 +183,21 @@ class ProductListTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "popoverSegue" {
+            let popoverViewController = segue.destination as? CategoryTableViewController
+            popoverViewController?.modalPresentationStyle = UIModalPresentationStyle.popover
+            popoverViewController?.popoverPresentationController!.delegate = self
+            let anchorView = sender as! UIView
+            popoverViewController?.popoverPresentationController?.sourceRect = anchorView.bounds
+            popoverViewController?.categories = self.categories
+            popoverViewController?.delegate = self
+        }
     }
-    */
+    
+
 
 }

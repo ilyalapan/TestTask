@@ -8,8 +8,17 @@
 
 import UIKit
 
-class CategoryTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
+@objc protocol CategorySelectedDelegate {
+    func categorySelected(index: Int)
+}
 
+class CategoryTableViewController: UITableViewController {
+
+    
+    var categories: [Dictionary<String,AnyObject>] = []
+
+    weak var delegate: CategorySelectedDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,40 +38,31 @@ class CategoryTableViewController: UITableViewController, UIPopoverPresentationC
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return categories.count
     }
 
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return UIModalPresentationStyle.none
-    }
     
-    func presentationController(_ controller: UIPresentationController, viewControllerForAdaptivePresentationStyle style: UIModalPresentationStyle) -> UIViewController? {
-        let navigationController = UINavigationController(rootViewController: controller.presentedViewController)
-        let btnDone = UIBarButtonItem(title: "Done", style: .done, target: self, action: "dismiss")
-        navigationController.topViewController?.navigationItem.rightBarButtonItem = btnDone
-        return navigationController
-    }
     
-    func dismiss() {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
 
         // Configure the cell...
-
+        cell.textLabel?.text = categories[indexPath.row]["name"] as! String?
+        
         return cell
     }
-    */
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.delegate?.categorySelected(index: indexPath.row)
+    }
+    
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

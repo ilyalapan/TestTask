@@ -7,6 +7,7 @@ target 'TestTask' do
 
   pod 'Alamofire', '~> 4.0'
   pod 'SDWebImage', '~>3.8'
+  pod 'AlamofireImage', '~> 3.1'
 
   # Pods for TestTask
 

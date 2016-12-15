@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import SDWebImage
+import AlamofireImage
+
 class ProductTableViewCell: UITableViewCell {
 
     @IBOutlet weak var thumbnailView: UIImageView!
@@ -22,7 +23,9 @@ class ProductTableViewCell: UITableViewCell {
         
         productNameLabel.text = product.name
         productUpvotesLabel.text = String(product.upvotes)
-        thumbnailView.sd_setImage(with: product.imageURL)
+        //thumbnailView.sd_setImage(with: product.imageURL)
+        thumbnailView.image = nil
+        thumbnailView.af_setImage(withURL: product.imageURL)
     
     }
     

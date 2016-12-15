@@ -99,14 +99,10 @@
 				77F072791E011F4B0071B49D /* Protocols */,
 				775B49821E01194B00AF244E /* AppDelegate.swift */,
 				775B49861E01194B00AF244E /* Main.storyboard */,
-				778E5AA21E0137B5005AEFBD /* ProductTableViewCell.swift */,
-				77F072771E011E990071B49D /* ProductListTableViewController.swift */,
-				778E5AA41E0148C5005AEFBD /* CategoryTableViewController.swift */,
-				77F0727C1E0121F20071B49D /* ProductListManager.swift */,
-				778E5AA61E0296F0005AEFBD /* DetailViewController.swift */,
-				778E5AA81E02A2D4005AEFBD /* WebDetailViewController.swift */,
+				77F631E71E02D2D700E6CACA /* View */,
+				77F631E81E02D2DE00E6CACA /* Controller */,
+				77F631E91E02D2E300E6CACA /* Model */,
 				77F072821E012DCD0071B49D /* RequestHelper.swift */,
-				77F072801E0128CB0071B49D /* Product.swift */,
 				775B49891E01194B00AF244E /* Assets.xcassets */,
 				775B498B1E01194B00AF244E /* LaunchScreen.storyboard */,
 				775B498E1E01194B00AF244E /* Info.plist */,
@@ -121,6 +117,34 @@
 				77F0727E1E0122460071B49D /* Pagination.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		77F631E71E02D2D700E6CACA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				778E5AA21E0137B5005AEFBD /* ProductTableViewCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		77F631E81E02D2DE00E6CACA /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				778E5AA61E0296F0005AEFBD /* DetailViewController.swift */,
+				77F072771E011E990071B49D /* ProductListTableViewController.swift */,
+				778E5AA81E02A2D4005AEFBD /* WebDetailViewController.swift */,
+				778E5AA41E0148C5005AEFBD /* CategoryTableViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		77F631E91E02D2E300E6CACA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				77F072801E0128CB0071B49D /* Product.swift */,
+				77F0727C1E0121F20071B49D /* ProductListManager.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -10,6 +10,9 @@ import Foundation
 
 
 class Product {
+    
+    var id: Int
+    
     var name: String
     
     var tagline: String
@@ -24,6 +27,8 @@ class Product {
     //var date: Date
     
     init(dict: [String: AnyObject]) {
+        
+        self.id = dict["id"] as! Int
         self.name = dict["name"] as! String
         self.tagline = dict["tagline"] as! String
         self.upvotes = dict["votes_count"] as! Int
@@ -32,6 +37,7 @@ class Product {
         var screenShot = dict["screenshot_url"] as! Dictionary<String,AnyObject>
         self.screenShotURL = URL(string: screenShot["850px"]! as! String)!
         self.detailURL = URL(string: dict["discussion_url"] as! String)!
+        
     }
 
     

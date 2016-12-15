@@ -18,6 +18,9 @@ class Product {
     
     var imageURL: URL
     
+    var screenShotURL: URL
+    
+    var detailURL: URL
     //var date: Date
     
     init(dict: [String: AnyObject]) {
@@ -26,6 +29,9 @@ class Product {
         self.upvotes = dict["votes_count"] as! Int
         var thumbnail = dict["thumbnail"] as! Dictionary<String,AnyObject>
         self.imageURL = URL(string: thumbnail["image_url"]! as! String)!
+        var screenShot = dict["screenshot_url"] as! Dictionary<String,AnyObject>
+        self.screenShotURL = URL(string: screenShot["850px"]! as! String)!
+        self.detailURL = URL(string: dict["discussion_url"] as! String)!
     }
 
     

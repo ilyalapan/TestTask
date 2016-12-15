@@ -196,6 +196,14 @@ class ProductListTableViewController: UITableViewController, UIPopoverPresentati
             popoverViewController?.categories = self.categories
             popoverViewController?.delegate = self
         }
+        else if segue.identifier == "popoverSegue" {
+            if let destination = segue.destination as? DetailViewController {
+                if let product = sender as? Product {
+                    destination.product = product
+                }
+            }
+        }
+
     }
     
 

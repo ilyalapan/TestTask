@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-Ji-Iwz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qbd-Ji-Iwz">
                                 <frame key="frameInset" minX="20" minY="72" width="374" height="204"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -58,7 +58,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="getItButtonPressed:" destination="X2u-L9-Zt2" eventType="touchUpInside" id="QUd-Dl-9mk"/>
-                                    <segue destination="quv-Qa-CfD" kind="show" id="o0t-dN-yBp"/>
+                                    <segue destination="quv-Qa-CfD" kind="show" identifier="webSegue" id="o0t-dN-yBp"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -68,7 +68,7 @@
                         <outlet property="nameLabel" destination="eAl-Dz-QmT" id="Hs5-zz-Bi1"/>
                         <outlet property="screenShotView" destination="qbd-Ji-Iwz" id="5oI-O1-RGJ"/>
                         <outlet property="taglineTextView" destination="IQN-an-j1N" id="zLx-RX-XAp"/>
-                        <outlet property="upvotes" destination="m7T-UN-Dwl" id="tNp-p8-QwQ"/>
+                        <outlet property="upvotesLabel" destination="m7T-UN-Dwl" id="7SG-xf-Peh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4hZ-NE-Pw1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -203,10 +203,10 @@
             </objects>
             <point key="canvasLocation" x="140" y="-206.44677661169416"/>
         </scene>
-        <!--View Controller-->
+        <!--Web Detail View Controller-->
         <scene sceneID="6Jb-Pu-VSU">
             <objects>
-                <viewController id="quv-Qa-CfD" sceneMemberID="viewController">
+                <viewController id="quv-Qa-CfD" customClass="WebDetailViewController" customModule="TestTask" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sX3-1L-dJv"/>
                         <viewControllerLayoutGuide type="bottom" id="el2-Uk-apT"/>
@@ -227,6 +227,9 @@
                             <constraint firstItem="el2-Uk-apT" firstAttribute="top" secondItem="YPu-TC-6gw" secondAttribute="bottom" id="uAs-J6-kJV"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="YPu-TC-6gw" id="bDE-pz-2hK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KxQ-Wx-7GE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -53,7 +53,14 @@ class DetailViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "webSegue" {
+            if let destination = segue.destination as? WebDetailViewController {
+                destination.URL = product?.detailURL
+            }
+        }
     }
+    
+    
     
 
 }

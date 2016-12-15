@@ -147,7 +147,10 @@ class ProductListTableViewController: UITableViewController, UIPopoverPresentati
         
     }
     
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let product = self.manager.products[indexPath.section][indexPath.row]
+        self.performSegue(withIdentifier: "detailSegue", sender: product)
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -196,7 +199,7 @@ class ProductListTableViewController: UITableViewController, UIPopoverPresentati
             popoverViewController?.categories = self.categories
             popoverViewController?.delegate = self
         }
-        else if segue.identifier == "popoverSegue" {
+        else if segue.identifier == "detailSegue" {
             if let destination = segue.destination as? DetailViewController {
                 if let product = sender as? Product {
                     destination.product = product

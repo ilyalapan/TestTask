@@ -8,7 +8,7 @@
 
 import UIKit
 import Alamofire
-
+import UserNotifications
 
 class ProductListTableViewController: UITableViewController, UIPopoverPresentationControllerDelegate, CategorySelectedDelegate {
 
@@ -25,6 +25,14 @@ class ProductListTableViewController: UITableViewController, UIPopoverPresentati
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: [.alert,.sound,.badge],
+            completionHandler: { (granted,error) in
+                print(error)
+            }
+        )
+        
         
         refreshControl = UIRefreshControl()
         refreshControl?.attributedTitle = NSAttributedString(string: "Pull to refresh")

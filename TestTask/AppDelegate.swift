@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import UserNotifications
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,26 +25,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let navController = window?.rootViewController as? UINavigationController {
             for viewController in navController.childViewControllers {
                 if let productListController = viewController as? ProductListTableViewController {
-                    let previousPosts = productListController.manager.products[0]
+                    let previousProducts = productListController.manager.products[0]
                     productListController.manager.load(){_ in
                         
-                        var new = productListController.manager.products[0].filter({ p1 in
-                            previousPosts.contains(where: { p2 in
-                                p1.id == p2.id
-                            })
-                        })
+                        var new = Product.subtractArraysOfProdcuts(firstArray: productListController.manager.products[0],secondArray: previousProducts)
                         
-                        var localNotification = UILocalNotification()
+                        let content = UNMutableNotificationContent()
                         if new.count == 0 {
                             completionHandler(UIBackgroundFetchResult.noData)
+                            return
                         }
                         else if new.count == 1{
-                            localNotification.fireDate = NSDate.init(timeIntervalSinceNow: 1) as Date
-                            localNotification.alertBody = new[0].name + ": new product!"
+                            content.title = "New Product"
+                            content.subtitle = "A new product:" + new[0].name
+                            content.body = new[0].tagline
+                            content.categoryIdentifier = "message"
                         } else {
-                            localNotification.fireDate = NSDate.init(timeIntervalSinceNow: 1) as Date
-                            localNotification.alertBody = String(new.count) + "new products"
+                            content.title = "New Products"
+                            content.subtitle = String(new.count) + "new products"
+                            content.body = ""
+                            content.categoryIdentifier = "message"
                         }
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1.0, repeats: false)
+                        let request = UNNotificationRequest(identifier: "10.second.message", content: content, trigger: trigger)
+                        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                        
                         productListController.tableView.reloadData()
                         completionHandler(UIBackgroundFetchResult.newData)
 
@@ -50,8 +57,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-    
     }
+    
+   
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

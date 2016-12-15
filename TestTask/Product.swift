@@ -39,6 +39,24 @@ class Product {
         self.detailURL = URL(string: dict["discussion_url"] as! String)!
         
     }
+    
+    static func subtractArraysOfProdcuts(firstArray: [Product], secondArray: [Product]) -> [Product] {
+        var new = [Product]()
+        var contains = false
+        for p1 in firstArray {
+            contains = false;
+            for p2 in secondArray {
+                if p1.id == p2.id {
+                    contains = true
+                    break
+                }
+            }
+            if !contains {
+                new.append(p1)
+            }
+        }
+        return new
+    }
 
     
 }
